@@ -6,14 +6,34 @@
 // const endCallBtn = document.getElementById('endCall');
 // const localAudio = document.getElementById('localAudio');
 // const remoteAudio = document.getElementById('remoteAudio');
+// const callTimer = document.getElementById('callTimer');
 
 // let localStream;
 // let peerConnection;
 // let isAdmin = false;
+// let callStartTime;
+// let callInterval;
 
 // const configuration = {
 //     iceServers: [{ urls: 'stun:stun.l.google.com:19302' }]
 // };
+
+// function startTimer() {
+//     callStartTime = Date.now();
+//     callTimer.style.display = 'block';
+//     callInterval = setInterval(() => {
+//         const elapsedTime = Date.now() - callStartTime;
+//         const minutes = Math.floor(elapsedTime / 60000);
+//         const seconds = Math.floor((elapsedTime % 60000) / 1000);
+//         callTimer.textContent = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+//     }, 1000);
+// }
+
+// function stopTimer() {
+//     clearInterval(callInterval);
+//     callTimer.textContent = '00:00';
+//     callTimer.style.display = 'none';
+// }
 
 // adminLoginBtn.addEventListener('click', async () => {
 //     const adminId = prompt('Enter admin ID:');
@@ -24,6 +44,7 @@
 //             localAudio.muted = true;
 //             socket.emit('adminLogin', adminId);
 //             isAdmin = true;
+//             endCallBtn.style.display = 'none'; // Hide end call button for admin
 //         } catch (error) {
 //             console.error('Error accessing media devices.', error);
 //         }
@@ -74,7 +95,9 @@
 //         localAudio.srcObject = null;
 //         remoteAudio.srcObject = null;
 //         socket.emit('endCall');
+//         console.log('User ended the call');
 //     }
+//     stopTimer();
 // });
 
 // socket.on('offer', async (offer) => {
@@ -109,6 +132,7 @@
 // socket.on('answer', async (answer) => {
 //     if (peerConnection) {
 //         await peerConnection.setRemoteDescription(new RTCSessionDescription(answer));
+//         socket.emit('callStarted');
 //     }
 // });
 
@@ -129,11 +153,12 @@
 //         localAudio.srcObject = null;
 //         remoteAudio.srcObject = null;
 //     }
+//     stopTimer();
 // });
 
 // socket.on('adminLoginSuccess', () => {
 //     alert('Admin logged in successfully');
-//     endCallBtn.disabled = false; // Enables End Call button for the admin
+//     endCallBtn.disabled = false;
 // });
 
 // socket.on('adminLoginFailure', (errorMessage) => {
@@ -146,9 +171,14 @@
 
 // socket.on('loginSuccess', () => {
 //     alert('User logged in successfully');
-//     startCallBtn.disabled = false; // Enables Start Call button for the user
-//     endCallBtn.disabled = false;   // Enables End Call button for the user
+//     startCallBtn.disabled = false;
+//     endCallBtn.disabled = false;
 // });
+
+// socket.on('callStarted', () => {
+//     startTimer();
+// });
+
 
 
 const socket = io();
@@ -173,7 +203,7 @@ const configuration = {
 
 function startTimer() {
     callStartTime = Date.now();
-    callTimer.style.display = 'block'; // Show the timer
+    callTimer.style.display = 'block';
     callInterval = setInterval(() => {
         const elapsedTime = Date.now() - callStartTime;
         const minutes = Math.floor(elapsedTime / 60000);
@@ -185,7 +215,7 @@ function startTimer() {
 function stopTimer() {
     clearInterval(callInterval);
     callTimer.textContent = '00:00';
-    callTimer.style.display = 'none'; // Hide the timer
+    callTimer.style.display = 'none';
 }
 
 adminLoginBtn.addEventListener('click', async () => {
@@ -197,6 +227,7 @@ adminLoginBtn.addEventListener('click', async () => {
             localAudio.muted = true;
             socket.emit('adminLogin', adminId);
             isAdmin = true;
+            endCallBtn.style.display = 'none'; // Hide end call button for admin
         } catch (error) {
             console.error('Error accessing media devices.', error);
         }
@@ -247,7 +278,9 @@ endCallBtn.addEventListener('click', () => {
         localAudio.srcObject = null;
         remoteAudio.srcObject = null;
         socket.emit('endCall');
+        console.log('User ended the call');
     }
+    stopTimer();
 });
 
 socket.on('offer', async (offer) => {
@@ -308,7 +341,7 @@ socket.on('endCall', () => {
 
 socket.on('adminLoginSuccess', () => {
     alert('Admin logged in successfully');
-    endCallBtn.disabled = false; // Enables End Call button for the admin
+    endCallBtn.disabled = false;
 });
 
 socket.on('adminLoginFailure', (errorMessage) => {
@@ -321,8 +354,8 @@ socket.on('adminNotAvailable', () => {
 
 socket.on('loginSuccess', () => {
     alert('User logged in successfully');
-    startCallBtn.disabled = false; // Enables Start Call button for the user
-    endCallBtn.disabled = false;   // Enables End Call button for the user
+    startCallBtn.disabled = false;
+    endCallBtn.disabled = false;
 });
 
 socket.on('callStarted', () => {

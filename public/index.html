@@ -1,57 +1,58 @@
 <!-- <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WebRTC Voice Chat</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <h1>WebRTC Voice Chat</h1>
     <div class="login-container">
-        <button id="adminLoginBtn" class="btn">Admin Login</button>
-        <button id="userLoginBtn" class="btn">User Login</button>
+        <button id="loginBtn" class="btn">Login</button>
     </div>
     <div class="call-container">
         <button id="startCall" class="btn" disabled>Start Call</button>
         <button id="endCall" class="btn" disabled>End Call</button>
     </div>
     <div id="audioContainer">
-        <audio id="localAudio" autoplay></audio>
+        <audio id="localAudio" autoplay muted></audio>
         <audio id="remoteAudio" autoplay></audio>
     </div>
+    <div id="callTimer">00:00</div>
 
     <script src="/socket.io/socket.io.js"></script>
     <script src="client.js"></script>
 </body>
 </html> -->
-
 
 <!-- <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WebRTC Voice Chat</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <h1>WebRTC Voice Chat</h1>
     <div class="login-container">
-        <button id="adminLoginBtn" class="btn">Admin Login</button>
-        <button id="userLoginBtn" class="btn">User Login</button>
+        <button id="loginBtn" class="btn">Login</button>
     </div>
     <div class="call-container">
         <button id="startCall" class="btn" disabled>Start Call</button>
         <button id="endCall" class="btn" disabled>End Call</button>
     </div>
     <div id="audioContainer">
-        <audio id="localAudio" autoplay></audio>
+        <audio id="localAudio" autoplay muted></audio>
         <audio id="remoteAudio" autoplay></audio>
     </div>
+    <div id="callTimer">00:00</div>
 
     <script src="/socket.io/socket.io.js"></script>
     <script src="client.js"></script>
 </body>
 </html> -->
-
-
 
 <!DOCTYPE html>
 <html>
@@ -73,10 +74,9 @@
         <audio id="localAudio" autoplay></audio>
         <audio id="remoteAudio" autoplay></audio>
     </div>
-    <div id="callTimer" >00:00</div> 
+    <div id="callTimer">00:00</div> 
 
     <script src="/socket.io/socket.io.js"></script>
     <script src="client.js"></script>
 </body>
 </html>
-
